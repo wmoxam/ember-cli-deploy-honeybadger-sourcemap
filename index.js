@@ -54,7 +54,7 @@ module.exports = {
         var publicUrl = this.readConfig('publicUrl');
 
         var promiseArray = [];
-        var jsMapPairs = fetchJSMapPairs(distFiles, publicUrl, distDir);
+        var jsMapPairs = fetchJSMapPairs(distFiles, 'dist', distDir);
 
         for (var i = 0; i < jsMapPairs.length; i++) {
           var mapFilePath = jsMapPairs[i].mapFile;
@@ -137,15 +137,18 @@ module.exports = {
   },
 };
 
-function fetchJSMapPairs(distFiles, publicUrl, distUrl) {
+function fetchJSMapPairs(distFiles, distPath, deployDistPath) {
   var jsFiles = indexByBaseFilename(fetchFilePaths(distFiles, '', 'js'));
+  console.log(jsFiles);
+
   return fetchFilePaths(distFiles, '', 'map').map(function(mapFile) {
     console.log(mapFile);
-    console.log(jsFiles);
+    console.log(getBaseFilename(mapFile));
+
     return {
-      mapFile: distUrl + mapFile,
-      jsFile: publicUrl + jsFiles[getBaseFilename(mapFile)],
-      minifiedFile: publicUrl + jsFiles[getBaseFilename(mapFile)],
+      mapFile: deployDistPath + mapFile,
+      jsFile: distPath + getBaseFilename(mapFile) + '.js',
+      minifiedFile: deployDistPath + jsFiles[getBaseFilename(mapFile)],
     };
   });
 }
@@ -158,7 +161,7 @@ function indexByBaseFilename(files) {
 }
 
 function getBaseFilename(file) {
-  return file.replace(/-[0-9a-f]+\.(js|map)$/, '');
+  return file.replace(/\.(js|map)$/, '');
 }
 
 function fetchFilePaths(distFiles, basePath, type) {
