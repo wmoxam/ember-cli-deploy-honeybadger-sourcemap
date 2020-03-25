@@ -142,13 +142,15 @@ function fetchJSMapPairs(distFiles, distPath, deployDistPath) {
   console.log(jsFiles);
 
   return fetchFilePaths(distFiles, '', 'map').map(function(mapFile) {
+    var baseFileName = mapFile.replace(/\.map$/, '');
+
     console.log(mapFile);
-    console.log(getBaseFilename(mapFile));
+    console.log(baseFileName);
 
     return {
       mapFile: deployDistPath + mapFile,
-      jsFile: distPath + getBaseFilename(mapFile) + '.js',
-      minifiedFile: deployDistPath + jsFiles[getBaseFilename(mapFile)],
+      jsFile: distPath + baseFileName + '.js',
+      minifiedFile: deployDistPath + jsFiles[baseFileName],
     };
   });
 }
