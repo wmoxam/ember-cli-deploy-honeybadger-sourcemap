@@ -61,10 +61,6 @@ module.exports = {
           var jsFilePath = jsMapPairs[i].jsFile;
           var minifiedFilePath = jsMapPairs[i].minifiedFile;
 
-          console.log("mapFilePath: " + mapFilePath);
-          console.log("jsFilePath: " + jsFilePath);
-          console.log("minifiedFilePath: " + minifiedFilePath);
-
           var formData = {
             api_key: apiKey,
             minified_url: jsFilePath,
@@ -140,13 +136,9 @@ module.exports = {
 
 function fetchJSMapPairs(distFiles, distPath, deployDistPath) {
   var jsFiles = indexByBaseFilename(fetchFilePaths(distFiles, '', 'js'));
-  console.log(jsFiles);
 
   return fetchFilePaths(distFiles, '', 'map').map(function(mapFile) {
     var baseFileName = mapFile.replace(/\.map$/, '');
-
-    console.log(mapFile);
-    console.log(baseFileName);
 
     return {
       mapFile: deployDistPath + mapFile,
