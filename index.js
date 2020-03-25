@@ -111,7 +111,7 @@ module.exports = {
         }
 
         return request({
-          uri: 'https://api.Honeybadger.com/api/1/deploy',
+          uri: 'https://api.honeybadger.io/v1/deploys',
           method: 'POST',
           formData: formData
         });
