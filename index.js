@@ -101,9 +101,9 @@ module.exports = {
         var username = this.readConfig('username');
 
         var formData = {
-          access_token: apiKey,
-          environment: environment,
-          revision: revision,
+          api_key: apiKey,
+          "deploy[environment]": environment,
+          "deploy[revision]": revision,
         };
 
         if (username) {
