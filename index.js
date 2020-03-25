@@ -63,6 +63,7 @@ module.exports = {
 
           console.log("mapFilePath: " + mapFilePath);
           console.log("jsFilePath: " + jsFilePath);
+          console.log("minifiedFilePath: " + minifiedFilePath);
 
           var formData = {
             api_key: apiKey,
