@@ -59,12 +59,17 @@ module.exports = {
         for (var i = 0; i < jsMapPairs.length; i++) {
           var mapFilePath = jsMapPairs[i].mapFile;
           var jsFilePath = jsMapPairs[i].jsFile;
+          var minifiedFilePath = jsMapPairs[i].minifiedFile;
+
+          console.log("mapFilePath: " + mapFilePath);
+          console.log("jsFilePath: " + jsFilePath);
 
           var formData = {
             api_key: apiKey,
             minified_url: jsFilePath,
             source_map: this._readSourceMap(mapFilePath),
             revision: revisionKey,
+            minified_file: this._readSourceMap(minifiedFilePath),
           };
 
           log(`Uploading sourcemap to Honeybadger: version=${revisionKey} minified_url=${jsFilePath}`, { verbose: true });
@@ -135,9 +140,12 @@ module.exports = {
 function fetchJSMapPairs(distFiles, publicUrl, distUrl) {
   var jsFiles = indexByBaseFilename(fetchFilePaths(distFiles, '', 'js'));
   return fetchFilePaths(distFiles, '', 'map').map(function(mapFile) {
+    console.log(mapFile);
+    console.log(jsFiles);
     return {
       mapFile: distUrl + mapFile,
-      jsFile: publicUrl + jsFiles[getBaseFilename(mapFile)]
+      jsFile: publicUrl + jsFiles[getBaseFilename(mapFile)],
+      minifiedFile: publicUrl + jsFiles[getBaseFilename(mapFile)],
     };
   });
 }
