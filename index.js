@@ -161,7 +161,7 @@ function indexByBaseFilename(files) {
 }
 
 function getBaseFilename(file) {
-  return file.replace(/\.(js|map)$/, '');
+  return file.replace(/-[0-9a-f]+\.(js|map)$/, '');
 }
 
 function fetchFilePaths(distFiles, basePath, type) {
