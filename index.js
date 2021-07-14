@@ -17,10 +17,10 @@ module.exports = {
 
       defaultConfig: Object.freeze({
         distDir: function(context) {
-          return context.distDir;
+          return context.distDir || '';
         },
         distFiles: function(context) {
-          return context.distFiles;
+          return context.distFiles || [];
         },
         gzippedFiles: function(context) {
           return context.gzippedFiles || [];
@@ -139,6 +139,17 @@ function fetchJSMapPairs(distFiles, publicUrl, deployDistPath) {
 
   return fetchFilePaths(distFiles, '', 'map').map(function(mapFile) {
     var baseFileName = mapFile.replace(/\.map$/, '');
+
+    // depending on the version of ember-cli, baseFileName may either
+    // be in the pattern /assets/some-app-{fingerprint} or just /assets/some-app
+    var baseHyphenTokens = baseFileName.split('-');
+    if (!jsFiles[baseFileName] && baseHyphenTokens.length > 1) {
+      baseFileName = baseHyphenTokens.slice(0, -1).join('-');
+    }
+
+    if (!jsFiles[baseFileName]) {
+      throw new Error("[ember-cli-deploy-honeybadger-sourcemap] jsFile not found: " + baseFileName + " (jsFiles: " + Object.keys(jsFiles).join(',') + ")");
+    }
 
     return {
       mapFile: deployDistPath + mapFile,
